@@ -1,5 +1,4 @@
 import { IRegisterUsers } from "../../interface/users"
-
 const { STUDENT } = require("../ENUMS/role")
 
 export const registerUserPayload = (payload: IRegisterUsers) => {
