@@ -1,5 +1,5 @@
 import { pool } from "../db"
-import { GET_STUDENTS_BY_ID, GET_STUDENTS } from "../db/queries"
+import { GET_STUDENTS_BY_ID, GET_STUDENTS, POST_STUDENTS } from "../db/queries"
 
 const { registerUserPayload } = require("../utils/payload/register.ts")
 
@@ -13,7 +13,6 @@ export const getUsers = (req: any, res: any) => {
                 res.status(200).json({ success: true, result: result.rows})
             }
         })
-        console.log('This is')
     } catch(e) {
         res.status(400).json({ success: false, result: e})
     }    
@@ -37,7 +36,21 @@ export const getUserById = ({params}: any, res: any) => {
 }
 
 export const createUser = ({ body: payload }: any, res: any) => {
-   const newPayload = registerUserPayload(payload)
-   console.log(newPayload)
+    try{
+        const {name, email, age, applyFor, role, username, password} = registerUserPayload(payload)
+        pool.query(POST_STUDENTS, [name, email, age, applyFor, role, username, password ], (err: any, result: any) => {
+            if(err){
+                console.log(err)
+                res.status(400).json({success: false, message: err})
+            } else {
+                console.log(result)
+                res.status(200).json({success: true, result: result.rows})
+            }
+        })
+    } catch(e) {
+        console.log(e)
+        res.status(400).json({success: false, message: e})
+
+    }
 }
 

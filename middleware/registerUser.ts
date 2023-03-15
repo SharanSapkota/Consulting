@@ -8,9 +8,10 @@ export const registerPayload = (req: any, res: any, next: any) => {
 
 export const checkEmail = ({body}: any, res: any, next: any) => {
     pool.query(CHECK_EMAIL, [body.email], (err: any, result: any) => {
-        if(result) {
+        if(result.rows.length>0) {
             res.json({success: false, message: "Email already in use!"})
+        } else {
+            next()
         }
-        next()
     })
 }

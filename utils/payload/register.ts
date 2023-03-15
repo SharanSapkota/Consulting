@@ -7,5 +7,6 @@ export const registerUserPayload = (payload: IRegisterUsers) => {
         password: payload.password,
         role    : STUDENT,
         applyFor: payload.applyFor,
+        email   : payload.email,
     }
 }
