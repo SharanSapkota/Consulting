@@ -3,15 +3,15 @@ import { CHECK_EMAIL } from "../db/queries";
 
 export const registerPayload = (req: any, res: any, next: any) => {
     const { name, email, dob, applyFor, ielts_score, pte_score } = req.body;
-    next()
+    next();
 }
 
-export const checkEmail = ({body}: any, res: any, next: any) => {
+export const checkEmail = ({ body }: any, res: any, next: any) => {
     pool.query(CHECK_EMAIL, [body.email], (err: any, result: any) => {
         if(result.rows.length>0) {
-            res.json({success: false, message: "Email already in use!"})
+            res.json({success: false, message: "Email already in use!"});
         } else {
-            next()
+            next();
         }
     })
 }

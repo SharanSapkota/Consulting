@@ -1,5 +1,6 @@
 import { pool } from "../db"
 import { GET_STUDENTS_BY_ID, GET_STUDENTS, POST_STUDENTS } from "../db/queries"
+import { buildResponse } from "../utils/response.js/SuccessResponse"
 
 const { registerUserPayload } = require("../utils/payload/register.ts")
 
@@ -10,7 +11,7 @@ export const getUsers = (req: any, res: any) => {
                 res.status(300).json({ success: true, result: err})
                 throw err
             } else {
-                res.status(200).json({ success: true, result: result.rows})
+                buildResponse(res, true, result.rows, "Success")
             }
         })
     } catch(e) {
@@ -26,7 +27,7 @@ export const getUserById = ({params}: any, res: any) => {
                 res.status(300).json({ success: false, result: err})
                 throw err
             } else {
-                res.status(200).json({ success: true, result: result.rows})
+                buildResponse(res, true, result.rows, "Success")
             }
         })
         console.log('This is')
@@ -37,14 +38,14 @@ export const getUserById = ({params}: any, res: any) => {
 
 export const createUser = ({ body: payload }: any, res: any) => {
     try{
-        const {name, email, age, applyFor, role, username, password} = registerUserPayload(payload)
+        const { name, email, age, applyFor, role, username, password } = registerUserPayload(payload)
         pool.query(POST_STUDENTS, [name, email, age, applyFor, role, username, password ], (err: any, result: any) => {
             if(err){
                 console.log(err)
                 res.status(400).json({success: false, message: err})
             } else {
                 console.log(result)
-                res.status(200).json({success: true, result: result.rows})
+                buildResponse(res, true, result.rows, "Success")
             }
         })
     } catch(e) {
